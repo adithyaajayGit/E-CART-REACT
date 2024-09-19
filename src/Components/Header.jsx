@@ -1,11 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Badge, Button } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+
 const Header = () => {
+  
+  const [wishlistcount,setWishlistcount] = useState(0)
+  const [cartcount,setCartcount] = useState(0)
+
+  const wishlist = useSelector(state=>state.wishlistSlice.wishlist)
+  const cartlist=useSelector(state=>state.cartReducer)
+
+  useEffect(() => {
+   setWishlistcount(wishlist.length)
+   setCartcount(cartlist.length)
+  }, [wishlist,cartlist]);
+
     return (
       <div>
         <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
@@ -19,12 +33,10 @@ const Header = () => {
               </Nav>
               <Nav>
                 <Nav.Link as={Link} to="/wishlist"> <Button variant="primary">
-                  <i className="fa-solid text-danger fa-heart mx-1"></i>Wishlist <Badge bg="secondary">9</Badge>
-                  <span className="visually-hidden">unread messages</span>
+                  <i className="fa-solid text-danger fa-heart mx-1"></i>Wishlist <Badge bg="secondary">{wishlistcount}</Badge>
                 </Button></Nav.Link>
                 <Nav.Link as={Link} to="/cart"> <Button variant="primary">
-                <i class="fa-solid fa-cart-plus text-warning mx-1"></i> Cart <Badge bg="secondary">9</Badge>
-                  <span className="visually-hidden">unread messages</span>
+                <i class="fa-solid fa-cart-plus text-warning mx-1"></i> Cart <Badge bg="secondary">{cartcount}</Badge>
                 </Button></Nav.Link>
               </Nav>
             </Navbar.Collapse>
